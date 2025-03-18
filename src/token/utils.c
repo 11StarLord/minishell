@@ -14,9 +14,11 @@ void	skip_whitespace(char *line, int *i)
         (*i)++;
 }
 
-char    *type_token(char *str)
+char    *type_token(char *str, int in_quotes)
 {
-    if (ft_strcmp(str, ">") == 0)
+    if (in_quotes == 1)
+        return ("ARGUMENT");
+    else if (ft_strcmp(str, ">") == 0)
         return ("REDIR_OUT");
     else if (ft_strcmp(str, "<") == 0)
         return ("REDIR_IN");

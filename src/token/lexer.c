@@ -53,7 +53,7 @@ static t_token *gettokens(t_shell *shell, char *input_line)
 	int	numb_tokens;
 
 	numb_tokens = count_tokens(input_line);
-	printf("Numero de tokens :%d\n", numb_tokens);
+	printf("Numero de tokens : %d\n", numb_tokens);
 	if (numb_tokens == 0)
 		return (NULL);
 	tokens = (t_token *)malloc(sizeof(t_token) * (numb_tokens + 1));

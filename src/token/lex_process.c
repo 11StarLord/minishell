@@ -27,14 +27,14 @@ void	process_tokens(t_shell *shell, char *line, t_token *tokens, int numb_tokens
 	int		index_line;
 	int		index_tok;
 	char	*current_str;
+	int		in_quotes;
 
 	index_line = 0;
 	index_tok = 0;
-	shell->tmp.active_quote = 0;
 	while (line[index_line] && index_tok < numb_tokens)
 	{
 		skip_whitespace(line, &index_line);
-		current_str = extract_token(line, &index_line, &shell->tmp.active_quote);
+		current_str = extract_token(line, &index_line, &in_quotes);
 		if (current_str)
 		{
 			if (is_separator(current_str[0]) && current_str[1] == '\0')
@@ -46,7 +46,7 @@ void	process_tokens(t_shell *shell, char *line, t_token *tokens, int numb_tokens
 			{
 				current_str = process_expansion(shell, current_str, 0);
 				tokens[index_tok].str = current_str;
-				tokens[index_tok].type = type_token(current_str, 1);
+				tokens[index_tok].type = type_token(current_str, in_quotes);
 				index_tok++;
 			}
 		}

@@ -28,16 +28,20 @@ char	*extract_token(char *input, int *index_inp, int *in_quotes)
 {
 	char	*token;
 	int		index_tok;
+	int		tmp_quote;
 
 	token = (char *)malloc(sizeof(char) * (ft_strlen(input) + 1));
 	if (!token)
 		return (NULL);
 	index_tok = 0;
+	tmp_quote = 0;
 	*in_quotes = 0;
 	while (input[*index_inp])
 	{
-		toggle_quote_state(in_quotes, input, index_inp);
-		if (*in_quotes == 0)
+		toggle_quote_state(&tmp_quote, input, index_inp);
+		if (tmp_quote != 0)
+			*in_quotes = 1;
+		if (tmp_quote == 0)
 		{
 			if (input[*index_inp] == ' ')
 				break;

@@ -14,8 +14,13 @@ static int count_next_token(char *input, int *index_inp)
 		{
 			if (input[*index_inp] == ' ')
 				break;
-			if (is_separator(input[*index_inp])) 
-				return (0);
+			if (is_separator(input[*index_inp]))
+			{
+				if (found_token)
+					return (1);
+				else
+					return (0);
+			}
 		}
 		found_token = 1;
 		(*index_inp)++;
@@ -36,12 +41,12 @@ static int count_tokens(char *line)
 		if (line[index_line])
 		{
 			skip_whitespace(line, &index_line);
-			count += count_next_token(line, &index_line);
 			if (is_separator(line[index_line]))
 			{
 				index_line++; 
 				count++;
 			}
+			count += count_next_token(line, &index_line);
 		}
 	}
 	return (count);

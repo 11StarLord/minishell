@@ -74,6 +74,6 @@ char    *type_token(char *str, int in_quotes);
 void	process_separator(char *line, int *index_line, t_token *tokens, int *index_tok);
 char	*get_separator(char *line, int *index_line);
 bool	is_type_token(t_token token, char *type);
-
+t_token	*organize_tokens(t_token *tokens);
 
 #endif

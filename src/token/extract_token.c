@@ -43,18 +43,8 @@ char	*extract_token(char *input, int *index_inp, int *in_quotes)
 			*in_quotes = 1;
 		if (tmp_quote == 0)
 		{
-			if (input[*index_inp] == ' ')
-				break;
-			if (is_separator(input[*index_inp]))
-			{
-				if (index_tok == 0)
-				{
-					token[0] = input[*index_inp];
-					token[1] = '\0';
-					return (token);
-				}
+			if (is_separator(input[*index_inp]) || input[*index_inp] == ' ')
 				break ;
-			}
 		}
 		token[index_tok++] = input[(*index_inp)++];
 	}

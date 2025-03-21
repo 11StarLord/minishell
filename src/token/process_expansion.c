@@ -90,5 +90,5 @@ char	*process_expansion(t_shell *shell, char *input, int is_heredoc)
     }
     perform_variable_expansion(shell, input, expanded, is_heredoc);
     ft_free(input);
-    return expanded;
+    return (expanded);
 }

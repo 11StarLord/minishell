@@ -1,5 +1,40 @@
 #include "minishell.h"
 
+t_token	*organize_tokens(t_token *tokens)
+{
+	int		index_tok;
+	t_token	tmp_token[3];
+
+	//printf("Entreiiiiiiiiiii\n");
+	index_tok = -1;
+	while (tokens[++index_tok].str)
+	{
+		if (is_type_token(tokens[index_tok], "REDIR_OUT")
+			|| is_type_token(tokens[index_tok], "REDIR_IN")
+			|| is_type_token(tokens[index_tok], "APPEND")
+			|| is_type_token(tokens[index_tok], "HEREDOC"))
+		{
+			if (tokens[index_tok + 2].str
+				&& is_type_token(tokens[index_tok + 2], "ARGUMENT"))
+			{
+				tmp_token[0] = tokens[index_tok];
+				tmp_token[1] = tokens[index_tok + 1];
+				tmp_token[2] = tokens[index_tok + 2];
+				tokens[index_tok] = tmp_token[2];
+				tokens[index_tok + 1] = tmp_token[0];
+				tokens[index_tok + 2] = tmp_token[1];
+				index_tok = 0;
+			}
+		}
+	}
+	index_tok = 0;
+	while (tokens[index_tok++].str)
+	{
+		printf("%d\t%s\t%s\n", index_tok, tokens[index_tok].str,tokens[index_tok].type);
+	}
+	return (tokens);
+}
+
 static int count_next_token(char *input, int *index_inp)
 {
 	int		found_token;
@@ -58,7 +93,6 @@ static t_token *gettokens(t_shell *shell, char *input_line)
 	int	numb_tokens;
 
 	numb_tokens = count_tokens(input_line);
-	printf("Numero de tokens : %d\n", numb_tokens);
 	if (numb_tokens == 0)
 		return (NULL);
 	tokens = (t_token *)malloc(sizeof(t_token) * (numb_tokens + 1));
@@ -68,7 +102,7 @@ static t_token *gettokens(t_shell *shell, char *input_line)
 		return (NULL);
 	}
 	process_tokens(shell, input_line, tokens, numb_tokens);
-	//organize_tokens(&tokens);
+	organize_tokens(tokens);
 	return (tokens);
 }
 

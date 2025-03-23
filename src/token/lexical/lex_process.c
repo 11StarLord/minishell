@@ -16,6 +16,7 @@ void	process_separator(char *line, int *index_line, t_token *tokens, int *index_
 	}
 }
 
+
 void	process_tokens(t_shell *shell, char *line, t_token *tokens, int numb_tokens)
 {
 	int		index_line;
@@ -36,7 +37,7 @@ void	process_tokens(t_shell *shell, char *line, t_token *tokens, int numb_tokens
 			tokens[index_tok].type = type_token(current_str, in_quotes);
 			index_tok++;
 		}
-		skip_whitespace(line, &index_line);
+		skip_whitespace(line, &index_line);		
 		process_separator(line, &index_line, tokens, &index_tok);
 	}
 	tokens[index_tok].str = NULL;

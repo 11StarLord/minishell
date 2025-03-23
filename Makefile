@@ -20,19 +20,23 @@ SRCS =  src/main.c \
 		src/env/get_env.c\
 		src/token/utils.c\
 
+OBJ_DIR = _objs
+OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)
 
-OBJS = $(SRCS:.c=.o)
+$(OBJ_DIR)/%.o: %.c
+	mkdir -p $(dir $@)
+	@$(CC) $(CFLAGS) -c $< -o $@
+
+all: $(NAME)
 
 $(NAME): $(OBJS) $(LIBFT)
 		@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) -lreadline -o $(NAME)
 		clear
-
-all: $(NAME)
-
+		
 $(LIBFT):
 		@make -C $(LIBFT_DIR)
 clean: 
-		@$(RM) $(OBJS)
+		@$(RM) $(OBJ_DIR)
 		@make clean -C $(LIBFT_DIR)
 		clear
 

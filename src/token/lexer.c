@@ -1,11 +1,10 @@
 #include "minishell.h"
 
-t_token	*organize_tokens(t_token *tokens)
+void	organize_tokens(t_token *tokens)
 {
 	int		index_tok;
 	t_token	tmp_token[3];
 
-	//printf("Entreiiiiiiiiiii\n");
 	index_tok = -1;
 	while (tokens[++index_tok].str)
 	{
@@ -14,6 +13,8 @@ t_token	*organize_tokens(t_token *tokens)
 			|| is_type_token(tokens[index_tok], "APPEND")
 			|| is_type_token(tokens[index_tok], "HEREDOC"))
 		{
+			if (tokens[index_tok + 1].str == NULL || tokens[index_tok + 2].str == NULL)
+				break ;
 			if (tokens[index_tok + 2].str
 				&& is_type_token(tokens[index_tok + 2], "ARGUMENT"))
 			{
@@ -27,12 +28,6 @@ t_token	*organize_tokens(t_token *tokens)
 			}
 		}
 	}
-	index_tok = 0;
-	while (tokens[index_tok++].str)
-	{
-		printf("%d\t%s\t%s\n", index_tok, tokens[index_tok].str,tokens[index_tok].type);
-	}
-	return (tokens);
 }
 
 static int count_next_token(char *input, int *index_inp)

@@ -75,5 +75,5 @@ char	*get_separator(char *line, int *index_line);
 bool	is_type_token(t_token token, char *type);
 
 void gettokens(t_shell *shell, char *input_line, t_token **tokens);
-t_token *reorganize_tokens(t_token *tokens);
+void reorganize_tokens(t_token *tokens);
 #endif

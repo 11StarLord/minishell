@@ -60,6 +60,13 @@ int calculate_expanded_length(t_shell *shell, char *input, int is_heredoc)
 	shell->tmp.active_quote = 0;
 	while (input[index])
 	{
+		if (input[index] == '\\' && shell->tmp.active_quote != '\'')
+		{
+			index += 2;
+			expanded_size++;
+			continue;
+		}
+
 		if (input[index] == '$' && input[index + 1] && 
 			(shell->tmp.active_quote != '\'' || is_heredoc))
 		{ 

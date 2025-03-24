@@ -26,11 +26,16 @@ void	handle_quotes(t_shell *shell, char *input, int *index_inp)
 {
 	char quote = input[*index_inp];
 
-	if ((quote == '"' || quote == '\'') && shell->tmp.active_quote != quote)
+	if (quote == '"' || quote == '\'')
 	{
-		if (ft_is_closed(input, *index_inp, quote))
-			shell->tmp.active_quote = quote;
+		if (shell->tmp.active_quote == 0)
+		{
+			if (ft_is_closed(input, *index_inp, quote))
+				shell->tmp.active_quote = quote;
+		}
+		else if (shell->tmp.active_quote == quote)
+		{
+			shell->tmp.active_quote = 0;
+		}
 	}
-	else if (quote == shell->tmp.active_quote)
-		shell->tmp.active_quote = 0;
 }

@@ -41,6 +41,6 @@ void	process_tokens(t_shell *shell, char *line, t_token *tokens, int numb_tokens
 			tokens[index_tok].type = type_token(current_str, in_quotes);
 			index_tok++;
 		}
-	}
+	} 
 	tokens[index_tok].str = NULL;
 }

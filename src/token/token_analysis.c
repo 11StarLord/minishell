@@ -17,6 +17,13 @@ void	token_analysis(t_shell *shell, char *input_line)
 		shell->status.last_return = 1;
 		return ;
 	}
+
+	int index_tok = 0;
+ 	while (tokens[index_tok].str)
+ 	{
+ 		printf("%d\t%s\t%s\n", index_tok, tokens[index_tok].str,tokens[index_tok].type);
+		 index_tok++;
+ 	}
 	/*process_and_validate_line(shell, &tokens);
 	if (shell->status.last_return == 258)
 	{

@@ -18,6 +18,7 @@ SRCS =  src/main.c \
 		src/token/lexical/calculate_expansion.c \
 		src/token/lexical/process_quote.c \
 		src/token/semantic/reorganize_token.c \
+		src/token/semantic/handle_redirection.c \
 		src/token/token_analysis.c\
 		src/token/utils.c\
 		src/env/get_env.c\

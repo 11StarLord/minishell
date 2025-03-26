@@ -24,7 +24,8 @@ void	token_analysis(t_shell *shell, char *input_line)
 		return ;
 	}
 	shell->charge = 1;*/
-	if(handle_redirection())
+	int test =handle_redirection(shell, 0, 0);
+	if(test == 1)
 		printf("Success\n");
 	ft_free_tokens(tokens);
 	ft_free(input_line);

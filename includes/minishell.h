@@ -3,6 +3,8 @@
 
 #include <unistd.h>
 #include <stdio.h>
+#include <fcntl.h>
+# include <sys/stat.h>
 #include <stdbool.h>
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -17,7 +19,7 @@ typedef struct s_token
 typedef struct s_status_shell
 {
     int last_return;
-    int no_exec;
+    int no_exec; 
     int exit_status;
 } t_status_shell;
 
@@ -39,19 +41,20 @@ typedef struct s_shell
 {
     t_token *tokens;
     t_env *env;
-    //t_env *env_copy;
     bool is_parent_process;
+    int fd_in;
+    int fd_out;
     t_status_shell status;
     t_tmp_values tmp;
 
 } t_shell;
 
-void    shell_defaults(t_shell *shell, char **env);
+void    init_shell(t_shell *shell,char **env);
+void    token_analysis(t_shell *shell, char *line);
+
 void    duplicate_env(t_shell *shell, char **env);
 void    free_matrix(char **matrix);
-void    init_shell(t_shell *shell);
 int     ft_readline(t_shell *shell, char **line);
-void    lexical_analysis(t_shell *shell, char *line);
 void    skip_whitespace(char *line, int *i);
 void	ft_free(void *ptr_to_free);
 void	process_tokens(t_shell *shell, char *line, t_token *tokens, int numb_tokens);
@@ -74,6 +77,9 @@ char    *type_token(char *str, int in_quotes);
 void	process_separator(char *line, int *index_line, t_token *tokens, int *index_tok);
 char	*get_separator(char *line, int *index_line);
 bool	is_type_token(t_token token, char *type);
-void	organize_tokens(t_token *tokens);
+int	compare_type(t_token token, char *type);
 
+void gettokens(t_shell *shell, char *input_line, t_token **tokens);
+void reorganize_tokens(t_token *tokens);
+int	handle_redirection(t_shell *shell, int token_index, int is_pipe);
 #endif

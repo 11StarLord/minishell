@@ -31,6 +31,13 @@ char    *type_token(char *str, int in_quotes)
     return ("ARGUMENT");
 }
 
+int	compare_type(t_token token, char *type)
+{
+	if (token.str && ft_strcmp(token.type,type) ==0)
+		return (1);
+	return (0);
+}
+
 char	*get_separator(char *line, int *index_line)
 {
 	int	length_separator;

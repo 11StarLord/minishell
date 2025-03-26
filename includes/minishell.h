@@ -3,6 +3,8 @@
 
 #include <unistd.h>
 #include <stdio.h>
+#include <fcntl.h>
+# include <sys/stat.h>
 #include <stdbool.h>
 #include <readline/readline.h>
 #include <readline/history.h>
@@ -17,7 +19,7 @@ typedef struct s_token
 typedef struct s_status_shell
 {
     int last_return;
-    int no_exec;
+    int no_exec; 
     int exit_status;
 } t_status_shell;
 
@@ -40,6 +42,8 @@ typedef struct s_shell
     t_token *tokens;
     t_env *env;
     bool is_parent_process;
+    int fd_in;
+    int fd_out;
     t_status_shell status;
     t_tmp_values tmp;
 

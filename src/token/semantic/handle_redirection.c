@@ -1,23 +1,40 @@
 #include "minishell.h"
 
-void	redirection(t_shell *shell, char *file, char *type)
+int redirection(t_shell *shell, char *file, char *type)
 {
-	ft_close(shell->fdout);
-	if (ft_strcmp(type, "trunc") == 0)
-		shell->fdout = open(file, O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
-	else
-		shell->fdout = open(file, O_CREAT | O_WRONLY | O_APPEND, S_IRWXU);
-	if (shell->fdout == -1)
-	{
-		ft_putstr_fd("minishell: ", STDERR);
-		ft_putstr_fd(file, STDERR);
-		ft_putendl_fd(": No such file or directory", STDERR);
-		shell->status->last_return = 1;
-		shell->status->no_exec = 1;
-		return ;
-	}
-	dup2(shell->fdout, STDOUT);
+    if (!file || !type)
+        return (-1);
+
+    int flags = O_CREAT | O_WRONLY;
+    if (ft_strcmp(type, "trunc") == 0)
+        flags |= O_TRUNC;
+    else
+        flags |= O_APPEND;
+
+    if (shell->fd_out > 0)
+        close(shell->fd_out);
+
+    shell->fd_out = open(file, flags, S_IRWXU);
+    if (shell->fd_out == -1)
+    {
+        ft_putstr_fd("minishell: ", STDERR_FILENO);
+        ft_putstr_fd(file, STDERR_FILENO);
+        ft_putendl_fd(": No such file or directory", STDERR_FILENO);
+        shell->status.last_return = 1;
+        shell->status.no_exec = 1;
+        return (-1);
+    }
+
+    if (dup2(shell->fd_out, STDOUT_FILENO) == -1)
+    {
+        ft_putstr_fd("minishell: error: failed to redirect output\n", STDERR_FILENO);
+        close(shell->fd_out);
+        return (-1);
+    }
+
+    return (0);
 }
+
 
 int	handle_redirection(t_shell *shell, int token_index, int is_pipe)
 {

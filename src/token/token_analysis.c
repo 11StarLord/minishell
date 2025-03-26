@@ -1,7 +1,5 @@
 #include "minishell.h"
 
-
-
 void	token_analysis(t_shell *shell, char *input_line)
 {
 	t_token	*tokens;
@@ -27,7 +25,7 @@ void	token_analysis(t_shell *shell, char *input_line)
 	}
 	shell->charge = 1;*/
 	if(handle_redirection())
-	
+		printf("Success\n");
 	ft_free_tokens(tokens);
 	ft_free(input_line);
 }

@@ -101,6 +101,152 @@ static t_token *gettokens(t_shell *shell, char *input_line)
 	return (tokens);
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+static char *get_trimmed_line(t_shell *shell, char *delimiter)
+{
+	char	*line;
+	char	*tmp;
+
+	line = readline("> ");
+	if (line == NULL)
+	{
+		ft_putstr_fd("minishell: warning : here_document", 2);
+		"delimited by end-of-file (wanted `", 2);
+		ft_putstr_fd(delimiter, 2);
+		ft_putstr_fd("')\n", 2);
+		exit (1);
+	}
+	tmp = ft_strtrim(line, " ");
+	tmp = process_expansion(shell, tmp, 1);
+	ft_free(line);
+	return (tmp);
+}
+
+static char	*heredoc(t_shell *shell, char *delimiter)
+{
+	char	*tmp;
+	char	*str;
+
+	str = ft_strdup("");
+	while (1)
+	{
+		tmp = get_trimmed_line(shell, delimiter);
+	}
+}
+
+
+static int handle_syntax_error()
+{
+	ft_putendl_fd("minishell: syntax error near unexpected token", 2);
+	return (258);
+}
+
+static int process_delimiter(t_shell *shell, t_token *tokens, int i, char **str_heredoc)
+{
+	t_token	delimiter;
+
+	if (tokens[i + 1].str)
+	{
+		delimiter = tokens[i + 1];
+		if (is_type_token(delimiter, "REDIR_OUT") || is_type_token(delimiter, "REDIR_IN")
+				|| is_type_token(delimiter, "APPEND") || is_type_token(delimiter, "PIPE")
+				|| is_type_token(delimiter, "HEREDOC"))
+			return (handle_syntax_error());
+		*str_heredoc = heredoc(shell, delimiter.str);
+	}
+	else
+		return (handle_syntax_error());
+}
+
+static int	verifying_heredoc(t_shell *shell, t_token *tokens, char *str_heredoc)
+{
+	int	i;
+
+	i = -1;
+	*str_heredoc = NULL;
+	while (tokens[++i].str)
+		if (is_type_token(tokens[i], "HEREDOC"))
+			return (process_delimiter(shell, tokens, i, str_heredoc));
+	return (0);
+}
+
+static void process_and_validate_line(t_shell *shell, t_token **tokens)
+{
+	char	*str_heredoc;
+	int		verif_heredoc;
+
+	str_heredoc = NULL;
+	verif_heredoc = verifYing_heredoc(shell, *tokens, &str_heredoc);
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 void	lexical_analysis(t_shell *shell, char *input_line)
 {
 	t_token	*tokens;

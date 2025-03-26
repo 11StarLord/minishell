@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static int redirection(t_shell *shell, char *file, char *type)
+/*static int redirection(t_shell *shell, char *file, char *type)
 {
     if (!file || !type)
         return (-1);
@@ -60,5 +60,5 @@ int	handle_redirection(t_shell *shell, int token_index, int is_pipe)
 		return (1);
 	
 	return (0);
-}
+}*/
 

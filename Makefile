@@ -23,6 +23,7 @@ SRCS =  src/main.c \
 		src/token/token_analysis.c\
 		src/token/utils.c\
 		src/env/get_env.c\
+		src/token/semantic/handle_heredoc_.c
 		
 
 OBJ_DIR = _objs

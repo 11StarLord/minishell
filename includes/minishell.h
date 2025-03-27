@@ -86,4 +86,6 @@ void gettokens(t_shell *shell, char *input_line, t_token **tokens);
 void reorganize_tokens(t_token *tokens);
 int	create_pipe_process(t_shell *shell);
 int	handle_redirection(t_shell *shell, int token_index, int is_pipe);
+int	verifying_heredoc(t_shell *shell, t_token *tokens, char **str_heredoc);
+
 #endif

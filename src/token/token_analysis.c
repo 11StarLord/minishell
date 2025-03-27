@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static char *get_trimmed_line(t_shell *shell, char *delimiter)
+/*static char *get_trimmed_line(t_shell *shell, char *delimiter)
 {
 	char	*line;
 	char	*tmp;
@@ -77,12 +77,12 @@ static int	verifying_heredoc(t_shell *shell, t_token *tokens, char **str_heredoc
 			return (process_delimiter(shell, tokens, i, str_heredoc));
 	return (0);
 }
-
+*/
 void	token_analysis(t_shell *shell, char *input_line)
 {
 	t_token	*tokens;
-	char	*str_heredoc;
-	int		verify_heredoc;
+	//char	*str_heredoc;
+	//int		verify_heredoc;
 
 	input_line = ft_strtrim(input_line, " ");
 	if (!input_line || !input_line[0])
@@ -97,17 +97,19 @@ void	token_analysis(t_shell *shell, char *input_line)
 		shell->status.last_return = 1;
 		return ;
 	}
-	str_heredoc = NULL;
+	/*str_heredoc = NULL;
 	verify_heredoc = verifying_heredoc(shell, tokens, &str_heredoc);
 	if (verify_heredoc == 258)
 	{
 		shell->status.last_return = 258;
 		return ;
 	}
-	/*shell->charge = 1;
+	shell->charge = 1;*/
 	int test =handle_redirection(shell, 0, 0);
 	if(test == 1)
-		printf("Success\n");*/
-	ft_free_tokens(tokens);
-	ft_free(input_line);
+		printf("Success\n");
+	else
+		printf("Failed\n");
+	/*ft_free_tokens(tokens);
+	ft_free(input_line);*/
 }

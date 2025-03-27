@@ -1,6 +1,30 @@
 #include "minishell.h"
+/*
+static void	redirection_input(t_shell *shell, const char *file)
+{
+	if(shell->fd_in > 0)
+		close(shell->fd_in);
 
-/*static int redirection(t_shell *shell, char *file, char *type)
+	shell->fd_in = open(file, O_RDONLY);
+	if (shell->fd_in == -1)
+	{
+		perror("minishell: erro ao abrir arquivo de entrada");
+		shell->status.last_return = 1;
+		shell->status.no_exec = 1;
+		return;
+	}
+
+	if (dup2(shell->fd_in, STDIN_FILENO) == -1)
+	{
+		perror("minishell: erro ao redirecionar entrada");
+		if(shell->fd_in > 0)
+			close(shell->fd_in);
+		shell->status.last_return = 1;
+		shell->status.no_exec = 1;
+	}
+}
+
+static int redirection(t_shell *shell, char *file, char *type)
 {
     if (!file || !type)
         return (-1);
@@ -33,32 +57,35 @@
     }
 
     return (0);
-}
+}*/
 
 int	handle_redirection(t_shell *shell, int token_index, int is_pipe)
 {
 	t_token	previous_token;
 
+	if (!shell || !shell->tokens)
+        return (0);
+
 	previous_token.str = NULL;
 	if (token_index > 0)
 		previous_token = shell->tokens[token_index - 1];
 
-	if (compare_type(previous_token, "REDIR_IN"))
+	/*if (compare_type(previous_token, "REDIR_OUT"))
 		redirection(shell, shell->tokens[token_index].str, "trunc");
 	else if (compare_type(previous_token, "APPEND"))
 		redirection(shell, shell->tokens[token_index].str, "append");
-	else if (compare_type(previous_token, "REDIR_OUT"))
-		input(shell, shell->tokens[token_index].str);
+	else if (compare_type(previous_token, "REDIR_IN"))
+        redirection_input(shell, shell->tokens[token_index].str);
 	else if (compare_type(previous_token, "PIPE"))
-		is_pipe = minipipe(shell);
+		is_pipe = create_pipe_process(shell);*/
 
-	if (shell->tokens[token_index + 1].str && is_pipe != 1)
-		handle_redirection(shell, token_index + 1, 0);
+	 if (shell->tokens[token_index + 1].str && is_pipe != 1)
+        handle_redirection(shell, token_index + 1, 0);
 
 	if ((!previous_token.str || compare_type(previous_token, "PIPE"))
 			 && is_pipe != 1 && shell->status.no_exec == 0)
 		return (1);
 	
 	return (0);
-}*/
+}
 

@@ -44,6 +44,9 @@ typedef struct s_shell
     bool is_parent_process;
     int fd_in;
     int fd_out;
+    int pipe_out;
+    int pipe_in;
+    int charge;
     t_status_shell status;
     t_tmp_values tmp;
 
@@ -81,5 +84,6 @@ int	compare_type(t_token token, char *type);
 
 void gettokens(t_shell *shell, char *input_line, t_token **tokens);
 void reorganize_tokens(t_token *tokens);
+int	create_pipe_process(t_shell *shell);
 int	handle_redirection(t_shell *shell, int token_index, int is_pipe);
 #endif

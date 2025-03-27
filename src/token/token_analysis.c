@@ -1,10 +1,23 @@
 #include "minishell.h"
 
+static void process_and_validate_line(t_shell *shell, t_token **tokens)
+{
+	char	*str_heredoc;
+	int		verify_heredoc;
+
+	str_heredoc = NULL;
+	verify_heredoc = verifying_heredoc(shell, *tokens, &str_heredoc);
+	if (verify_heredoc == 258)
+	{
+		shell->status.last_return = 258;
+		ft_free(tokens);
+		return ;
+	}
+}
+
 void	token_analysis(t_shell *shell, char *input_line)
 {
 	t_token	*tokens;
-	char	*str_heredoc;
-	int		verify_heredoc;
 
 	input_line = ft_strtrim(input_line, " ");
 	if (!input_line || !input_line[0])
@@ -19,11 +32,10 @@ void	token_analysis(t_shell *shell, char *input_line)
 		shell->status.last_return = 1;
 		return ;
 	}
-	str_heredoc = NULL;
-	verify_heredoc = verifying_heredoc(shell, tokens, &str_heredoc);
-	if (verify_heredoc == 258)
+	process_and_validate_line(shell, &tokens);
+	if (shell->status.last_return == 258)
 	{
-		shell->status.last_return = 258;
+		ft_free(input_line);
 		return ;
 	}
 	shell->charge = 1;

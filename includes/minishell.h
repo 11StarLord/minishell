@@ -49,7 +49,7 @@ typedef struct s_shell
     int charge;
     t_status_shell status;
     t_tmp_values tmp;
-
+    int token_size;
 } t_shell;
 
 void    init_shell(t_shell *shell,char **env);

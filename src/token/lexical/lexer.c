@@ -44,6 +44,7 @@ void gettokens(t_shell *shell, char *input_line, t_token **tokens)
     int numb_tokens;
 
     numb_tokens = count_tokens(input_line);
+	shell->tokens_size = numb_tokens;
     if (numb_tokens == 0)
         return;
 

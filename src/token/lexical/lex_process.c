@@ -37,7 +37,7 @@ void	process_tokens(t_shell *shell, char *line, t_token *tokens, int numb_tokens
 		if (current_str)
 		{
 			current_str = process_expansion(shell, current_str, 0);
-			tokens[index_tok].str = current_str;
+			tokens[index_tok].str = ft_strdup(current_str);
 			tokens[index_tok].type = type_token(current_str, in_quotes);
 			index_tok++;
 		}

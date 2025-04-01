@@ -46,27 +46,17 @@ static char	*heredoc(t_shell *shell, char *delimiter)
 	return (str);
 }
 
-static int print_syntax_error(void)
+/*static int process_delimiter(t_shell *shell, t_token *tokens, int i, char **str_heredoc)
 {
-	ft_putendl_fd("minishell: syntax error near unexpected token", 2);
-	return (258);
-}
-
-static int process_delimiter(t_shell *shell, t_token *tokens, int i, char **str_heredoc)
-{
-	if (!tokens[i + 1].str || is_type_token(tokens[i + 1], "REDIR_OUT")
-			|| is_type_token(tokens[i + 1], "REDIR_IN") || is_type_token(tokens[i + 1], "APPEND")
-			|| is_type_token(tokens[i + 1], "PIPE") || is_type_token(tokens[i + 1], "HEREDOC"))
-			return (print_syntax_error());
 	*str_heredoc = heredoc(shell, tokens[i + 1].str);
 	free(tokens[i + 1].str);
 	tokens[i + 1].str = NULL;
 	free(tokens[i].str);
 	tokens[i].str = NULL;
 	return (1);
-}
+}*/
 
-int	verifying_heredoc(t_shell *shell, t_token *tokens, char **str_heredoc)
+char	*handle_heredoc(t_shell *shell, t_token *tokens, char **str_heredoc)
 {
 	int	i;
 
@@ -74,6 +64,7 @@ int	verifying_heredoc(t_shell *shell, t_token *tokens, char **str_heredoc)
 	*str_heredoc = NULL;
 	while (tokens[++i].str)
 		if (is_type_token(tokens[i], "HEREDOC"))
-			return (process_delimiter(shell, tokens, i, str_heredoc));
-	return (0);
+			*str_heredoc = heredoc(shell, tokens[i + 1].str);
+			//process_delimiter(shell, tokens, i, str_heredoc);
+	return (*str_heredoc);
 }

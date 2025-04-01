@@ -5,13 +5,15 @@ static void copy_remaining_tokens(t_shell *shell, t_token *tokens, int *i)
 	int	j;
 
 	j = 0;
-	if (tokens[0].str)
-	{
-		shell->tokens[*i].str = ft_strdup("|");
-		shell->tokens[(*i)++].type = "PIPE";
-	}
 	while (tokens[j].str)
 	{
+		if (j == 0)
+		{
+			shell->tokens[*i].str = ft_strdup("|");
+			shell->tokens[(*i)++].type = "PIPE";
+		}
+		if (is_type_token(tokens[j], "HEREDOC"))
+			j += 2;
 		shell->tokens[*i].str = ft_strdup(tokens[j].str);
 		shell->tokens[*i].type = tokens[j].type;
 		(*i)++;
@@ -30,14 +32,33 @@ static void add_heredoc_tokens(t_shell *shell, char *str_heredoc, int *i)
 	shell->tokens[(*i)++].type = "ARGUMENT";
 }
 
-static void	dup_tokens(t_shell *shell, t_token *tokens, char *str_heredoc)
+void	dup_tokens(t_shell *shell, t_token *tokens)
 {
 	int	i;
+	char	*str_heredoc;
 
 	i = 0;
+	str_heredoc = NULL;
+	str_heredoc = handle_heredoc(shell, tokens, &str_heredoc);
 	if (str_heredoc && str_heredoc[0])
 	{
-		shell->tokens = (t_token *)malloc(sizeof(t_token) * (shell->tokens_size + 4));
+		shell->tokens = (t_token *)malloc(sizeof(t_token) * (shell->tokens_size + 3));
+		add_heredoc_tokens(shell, str_heredoc, &i);
+		copy_remaining_tokens(shell, tokens, &i);
+	}
+}
+
+void	dup_tokens(t_shell *shell, t_token *tokens)
+{
+	int	i;
+	char	*str_heredoc;
+
+	i = 0;
+	str_heredoc = NULL;
+	str_heredoc = handle_heredoc(shell, tokens, &str_heredoc);
+	if (str_heredoc && str_heredoc[0])
+	{
+		shell->tokens = (t_token *)malloc(sizeof(t_token) * (shell->tokens_size + 3));
 		add_heredoc_tokens(shell, str_heredoc, &i);
 		copy_remaining_tokens(shell, tokens, &i);
 	}
@@ -51,22 +72,6 @@ static void	dup_tokens(t_shell *shell, t_token *tokens, char *str_heredoc)
 			i++;
 		}
 		shell->tokens[i].str = NULL;
-	}
-}
-
-static void process_and_validate_line(t_shell *shell, t_token **tokens)
-{
-	char	*str_heredoc;
-	int		verify_heredoc;
-
-	str_heredoc = NULL;
-	verify_heredoc = verifying_heredoc(shell, *tokens, &str_heredoc);
-	dup_tokens(shell, *tokens, str_heredoc);
-	if (verify_heredoc == 258)
-	{
-		shell->status.last_return = 258;
-		ft_free(tokens);
-		return ;
 	}
 }
 
@@ -87,12 +92,13 @@ void	token_analysis(t_shell *shell, char *input_line)
 		shell->status.last_return = 1;
 		return ;
 	}
-	process_and_validate_line(shell, &tokens);
+	is_valid_redirect_syntax(tokens, shell);
 	if (shell->status.last_return == 258)
 	{
 		ft_free(input_line);
 		return ;
 	}
+	dup_tokens(shell,tokens);
 	/*shell->charge = 1;
 	int test =handle_redirection(shell, 0, 0);
 	if(test == 1)

@@ -88,6 +88,5 @@ int	create_pipe_process(t_shell *shell);
 bool is_valid_redirect_syntax(t_token *tokens, t_shell *shell);
 void	dup_tokens(t_shell *shell, t_token *tokens);
 int	handle_redirection(t_shell *shell, int token_index, int is_pipe);
-char	*handle_heredoc(t_shell *shell, t_token *tokens, char **str_heredoc);
 
 #endif

@@ -1,5 +1,40 @@
 #include "minishell.h"
 
+static void copy_remaining_tokens(t_shell *shell, t_token *tokens, int *i)
+{
+	int	j;
+
+	j = 0;
+	while (tokens[j].str)
+	{
+		if (j == 0)
+		{
+			shell->tokens[*i].str = ft_strdup("|");
+			shell->tokens[(*i)++].type = "PIPE";
+		}
+		if (is_type_token(tokens[j], "HEREDOC"))
+		{
+			j += 2;
+			continue;
+		}
+		shell->tokens[*i].str = ft_strdup(tokens[j].str);
+		shell->tokens[*i].type = tokens[j].type;
+		(*i)++;
+		j++;
+	}
+	shell->tokens[*i].str = NULL;
+}
+
+static void add_heredoc_tokens(t_shell *shell, char *str_heredoc, int *i)
+{
+	shell->tokens[*i].str = ft_strdup("/bin/echo/");
+	shell->tokens[(*i)++].type = "ARGUMENT";
+	shell->tokens[*i].str = ft_strdup("-e");
+	shell->tokens[(*i)++].type = "ARGUMENT";
+	shell->tokens[*i].str = ft_strdup(str_heredoc);
+	shell->tokens[(*i)++].type = "ARGUMENT";
+}
+
 static char *get_trimmed_line(t_shell *shell, char *delimiter)
 {
 	char	*line;
@@ -46,25 +81,24 @@ static char	*heredoc(t_shell *shell, char *delimiter)
 	return (str);
 }
 
-/*static int process_delimiter(t_shell *shell, t_token *tokens, int i, char **str_heredoc)
-{
-	*str_heredoc = heredoc(shell, tokens[i + 1].str);
-	free(tokens[i + 1].str);
-	tokens[i + 1].str = NULL;
-	free(tokens[i].str);
-	tokens[i].str = NULL;
-	return (1);
-}*/
-
-char	*handle_heredoc(t_shell *shell, t_token *tokens, char **str_heredoc)
+void	handle_heredoc(t_shell *shell, t_token *tokens)
 {
 	int	i;
+	char	*str_heredoc;
 
-	i = -1;
-	*str_heredoc = NULL;
-	while (tokens[++i].str)
-		if (is_type_token(tokens[i], "HEREDOC"))
-			*str_heredoc = heredoc(shell, tokens[i + 1].str);
-			//process_delimiter(shell, tokens, i, str_heredoc);
-	return (*str_heredoc);
+	i = 0;
+	str_heredoc = NULL;
+	while (tokens[i].str)
+	{
+		if (is_type_token(tokens[i], "HEREDOC") && tokens[i + 1].str)
+			str_heredoc = heredoc(shell, tokens[i + 1].str);
+		i++;
+	}
+	i = 0;
+	if (str_heredoc && str_heredoc[0])
+	{
+		shell->tokens = (t_token *)malloc(sizeof(t_token) * (shell->tokens_size + 3));
+		add_heredoc_tokens(shell, str_heredoc, &i);
+		copy_remaining_tokens(shell, tokens, &i);
+	}
 }

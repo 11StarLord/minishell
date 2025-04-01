@@ -24,6 +24,7 @@ SRCS =  src/main.c \
 		src/token/utils.c\
 		src/env/get_env.c\
 		src/token/semantic/handle_heredoc.c	\
+		src/token/semantic/dup_token.c	\
 		src/redir/verify_redir_syntax.c 
 
 OBJ_DIR = _objs

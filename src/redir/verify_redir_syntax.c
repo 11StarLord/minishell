@@ -26,7 +26,7 @@ static bool is_valid_next_token(t_token *tokens, int i)
 	return (false);
 }
 
-bool is_valid_redirect_syntax(t_token *tokens)
+bool is_valid_redirect_syntax(t_token *tokens, t_shell *shell)
 {
 	int	i;
 
@@ -38,7 +38,10 @@ bool is_valid_redirect_syntax(t_token *tokens)
 		|| is_type_token(tokens[i], "PIPE") || is_type_token(tokens[i], "HEREDOC"))
 		{
 			if (!is_valid_next_token(tokens, i)|| !is_valid_previous_token(tokens, i))
+			{
+				shell->status.last_return == 258;
 				return (false);
+			}
 		}
 		i++;
 	}

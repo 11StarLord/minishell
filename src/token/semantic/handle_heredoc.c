@@ -81,7 +81,7 @@ static char	*heredoc(t_shell *shell, char *delimiter)
 	return (str);
 }
 
-void	handle_heredoc(t_shell *shell, t_token *tokens)
+bool	has_heredoc(t_shell *shell, t_token *tokens)
 {
 	int	i;
 	char	*str_heredoc;
@@ -100,5 +100,7 @@ void	handle_heredoc(t_shell *shell, t_token *tokens)
 		shell->tokens = (t_token *)malloc(sizeof(t_token) * (shell->tokens_size + 3));
 		add_heredoc_tokens(shell, str_heredoc, &i);
 		copy_remaining_tokens(shell, tokens, &i);
+		return (true);
 	}
+	return (false);
 }

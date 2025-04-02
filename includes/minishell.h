@@ -87,7 +87,8 @@ void reorganize_tokens(t_token *tokens);
 int	create_pipe_process(t_shell *shell);
 bool is_valid_redirect_syntax(t_token *tokens, t_shell *shell);
 void	dup_tokens(t_shell *shell, t_token *tokens);
-int	handle_redirection(t_shell *shell, int token_index, int is_pipe);
+void	handle_redirection(t_shell *shell, int pos_token, int *pipe);
 bool	has_heredoc(t_shell *shell, t_token *tokens);
-
+void	execute_command(t_shell *shell, int pos_token, int pipe);
+void	handle_execution(t_shell *shell, int *pos_token);
 #endif

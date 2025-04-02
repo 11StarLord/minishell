@@ -24,12 +24,10 @@ void	token_analysis(t_shell *shell, char *input_line)
 		return ;
 	}
 	dup_tokens(shell,tokens);
-	/*shell->charge = 1;
-	int test =handle_redirection(shell, 0, 0);
-	if(test == 1)
-		printf("Success\n");
-	else
-		printf("Failed\n");
-	ft_free_tokens(tokens);
-	ft_free(input_line);*/
+	shell->charge = 0;
+	handle_redirection(shell, 0, 0);
+	execute_command(shell, 0, 0);
+
+    ft_free_tokens(tokens);
+    ft_free(input_line);
 }

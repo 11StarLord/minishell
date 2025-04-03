@@ -17,17 +17,16 @@ void	token_analysis(t_shell *shell, char *input_line)
 		shell->status.last_return = 1;
 		return ;
 	}
-	is_valid_redirect_syntax(tokens, shell);
-	if (shell->status.last_return == 258)
+	if(is_valid_redirect_syntax(tokens, shell) == false)
 	{
 		ft_free(input_line);
+		ft_free_tokens(tokens);
 		return ;
 	}
 	dup_tokens(shell,tokens);
-	shell->charge = 0;
+	/*shell->charge = 0;
 	handle_redirection(shell, 0, 0);
-	execute_command(shell, 0, 0);
-
+	execute_command(shell, 0, 0);*/
     ft_free_tokens(tokens);
     ft_free(input_line);
 }

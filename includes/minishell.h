@@ -9,6 +9,7 @@
 #include <readline/readline.h>
 #include <readline/history.h>
 #include "../libs/libft/libft.h"
+#include <sys/wait.h>
 
 typedef struct s_token
 {
@@ -85,10 +86,13 @@ int	compare_type(t_token token, char *type);
 void gettokens(t_shell *shell, char *input_line, t_token **tokens);
 void reorganize_tokens(t_token *tokens);
 int	create_pipe_process(t_shell *shell);
-bool is_valid_redirect_syntax(t_token *tokens, t_shell *shell);
+bool    is_valid_redirect_syntax(t_token *tokens, t_shell *shell);
 void	dup_tokens(t_shell *shell, t_token *tokens);
 void	handle_redirection(t_shell *shell, int pos_token, int *pipe);
 bool	has_heredoc(t_shell *shell, t_token *tokens);
 void	execute_command(t_shell *shell, int pos_token, int pipe);
 void	handle_execution(t_shell *shell, int *pos_token);
+void	handle_redirection_test(t_shell *shell);
+void	reset_fds(t_shell *shell);
+
 #endif

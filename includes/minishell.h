@@ -43,8 +43,8 @@ typedef struct s_shell
     t_token *tokens;
     t_env *env;
     bool is_parent_process;
-    int in;
-    int out;
+    int stdin;
+    int stdout;
     int fd_in;
     int fd_out;
     int pipe_out;

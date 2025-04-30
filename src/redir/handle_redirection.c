@@ -10,40 +10,29 @@ static void	redir(t_shell *shell, char *file, char *type)
 		shell->fd_out = open(file, O_CREAT | O_WRONLY | O_APPEND, S_IRWXU);
 	if (shell->fd_out == -1)
 	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(file, 2);
-		ft_putendl_fd(": No such file or directory", 2);
+		perror("minishell");
 		shell->status.last_return = 1;
 		shell->status.no_exec = 1;
 		return ;
 	}
-	dup2(shell->fd_out, 2);
+	dup2(shell->out ,shell->fd_out);
 }
 
 
-/*static void	redirection_input(t_shell *shell, const char *file)
+static void	redirection_input(t_shell *shell, char *file)
 {
 	if(shell->fd_in > 0)
 		close(shell->fd_in);
-
-	shell->fd_in = open(file, O_RDONLY);
+	shell->fd_in = open(file, O_RDONLY, S_IRWXU);
 	if (shell->fd_in == -1)
 	{
-		perror("minishell: erro ao abrir arquivo de entrada");
+		perror("minishell");
 		shell->status.last_return = 1;
 		shell->status.no_exec = 1;
-		return;
+		return ;
 	}
-
-	if (dup2(shell->fd_in, STDIN_FILENO) == -1)
-	{
-		perror("minishell: erro ao redirecionar entrada");
-		if(shell->fd_in > 0)
-			close(shell->fd_in);
-		shell->status.last_return = 1;
-		shell->status.no_exec = 1;
-	}
-}*/
+	dup2(shell->in ,shell->fd_in);
+}
 
 /*static void redirection(t_shell *shell, char *file, char *type)
 {
@@ -76,25 +65,18 @@ static void	redir(t_shell *shell, char *file, char *type)
 
 void	handle_redirection(t_shell *shell, int token_index, int *pipe)
 {
-	/*t_token previous_token;
-
-	previous_token.str = NULL;
-	if (token_index > 0)
-		previous_token = shell->tokens[token_index - 1];*/
 	(void)pipe;
 	while (shell->tokens[token_index].str)
 	{
 		if (is_type_token(shell->tokens[token_index], "REDIR_OUT"))
-		{
-			printf("%s\n", shell->tokens[token_index + 1].str);
 			redir(shell, shell->tokens[token_index + 1].str, "trunc");
-		}
+		else if (is_type_token(shell->tokens[token_index], "APPEND"))
+			redir(shell, shell->tokens[token_index + 1].str, "append");
+		else if (is_type_token(shell->tokens[token_index], "REDIR_IN"))
+			redirection_input(shell, shell->tokens[token_index + 1].str);
 		token_index++;
 	}
-    	/*else if (compare_type(previous_token, "APPEND"))
-		redirection(shell, shell->tokens[token_index].str, "append");
-	else if (compare_type(previous_token, "REDIR_IN"))
-        redirection_input(shell, shell->tokens[token_index].str);
+    	/*
 	else if (compare_type(previous_token, "PIPE"))
 		*pipe = create_pipe_process(shell);
 

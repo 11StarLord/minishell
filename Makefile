@@ -26,7 +26,8 @@ SRCS =  src/main.c \
 		src/token/semantic/handle_heredoc.c	\
 		src/token/semantic/dup_token.c	\
 		src/redir/verify_redir_syntax.c \
-		src/exec/handle_execution.c 
+		src/exec/handle_execution.c 	\
+		src/utils/reset_and_close_fd.c
 
 OBJ_DIR = _objs
 OBJS = $(SRCS:%.c=$(OBJ_DIR)/%.o)

@@ -3,6 +3,8 @@
 static void shell_defaults(t_shell *shell, char **env)
 {
      duplicate_env(shell, env);
+     reset_std(shell);
+     reset_fds(shell);
 }
 
 void init_shell(t_shell *shell,char ** env)
@@ -18,5 +20,8 @@ void init_shell(t_shell *shell,char ** env)
           if (!ft_readline(shell, &input_line))
                break ;
           token_analysis(shell, input_line);
+          reset_std(shell);
+		close_fds(shell);
+		reset_fds(shell);
      }
 }

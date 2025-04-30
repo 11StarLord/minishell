@@ -43,6 +43,8 @@ typedef struct s_shell
     t_token *tokens;
     t_env *env;
     bool is_parent_process;
+    int in;
+    int out;
     int fd_in;
     int fd_out;
     int pipe_out;
@@ -94,5 +96,7 @@ void	execute_command(t_shell *shell, int pos_token, int pipe);
 void	handle_execution(t_shell *shell, int *pos_token);
 void	handle_redirection_test(t_shell *shell);
 void	reset_fds(t_shell *shell);
+void	reset_std(t_shell *shell);
+void    close_fds(t_shell *shell);
 
 #endif

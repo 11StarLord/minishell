@@ -2,8 +2,6 @@
 
 static void shell_defaults(t_shell *shell, char **env)
 {
-     shell->stdin = dup(STDIN_FILENO);
-     shell->stdout = dup(STDOUT_FILENO);
      duplicate_env(shell, env);
      reset_fds(shell);
 }

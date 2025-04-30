@@ -1,24 +1,5 @@
 #include "minishell.h"
 
-/*static void	redir(t_shell *shell, char *file, char *type)
-{
-	if (shell->fd_out > 0)
-		close(shell->fd_out);
-	if (ft_strcmp(type, "trunc") == 0)
-		shell->fd_out = open(file, O_CREAT | O_WRONLY | O_TRUNC, S_IRWXU);
-	else
-		shell->fd_out = open(file, O_CREAT | O_WRONLY | O_APPEND, S_IRWXU);
-	if (shell->fd_out == -1)
-	{
-		perror("minishell");
-		shell->status.last_return = 1;
-		shell->status.no_exec = 1;
-		return ;
-	}
-	dup2(shell->out ,shell->fd_out);
-}*/
-
-
 static void	redirection_input(t_shell *shell, char *file)
 {
 	if(shell->fd_in > 0)
@@ -68,7 +49,6 @@ static void redirection(t_shell *shell, char *file, char *type)
 
 void	handle_redirection(t_shell *shell, int token_index, int *pipe)
 {
-	(void)pipe;
 	while (shell->tokens[token_index].str)
 	{
 		if (is_type_token(shell->tokens[token_index], "REDIR_OUT"))
@@ -86,12 +66,16 @@ void	handle_redirection(t_shell *shell, int token_index, int *pipe)
 			redirection_input(shell, shell->tokens[token_index + 1].str);
 			token_index += 2;
 		}
+		else if (is_type_token(shell->tokens[token_index], "PIPE"))
+		{
+			*pipe = create_pipe_process(shell);
+			token_index += 2;
+		}
 		else
 			token_index++;
 	}
     	/*
-	else if (compare_type(previous_token, "PIPE"))
-		*pipe = create_pipe_process(shell);
+	
 
 	if (shell->tokens[token_index + 1].str && *pipe != 1)
 		handle_redirection(shell, token_index + 1, pipe);*/

@@ -69,27 +69,19 @@ void	handle_redirection(t_shell *shell, int token_index, int *pipe)
 		else if (is_type_token(shell->tokens[token_index], "PIPE"))
 		{
 			*pipe = create_pipe_process(shell);
-			token_index += 2;
+			token_index ++;
 		}
 		else
 			token_index++;
 	}
-    	/*
-	
-
-	if (shell->tokens[token_index + 1].str && *pipe != 1)
-		handle_redirection(shell, token_index + 1, pipe);*/
-	
 }
 
-void	execute_command(t_shell *shell, int token_index, int pipe)
+void	execute_command(t_shell *shell, int start, int end)
 {
-	t_token previous_token;
+	pid_t	pid;
+	char	**cmd_args;
 
-	previous_token.str = NULL;
-	if (token_index > 0)
-		previous_token = shell->tokens[token_index - 1];
-
-	if ((!previous_token.str || compare_type(previous_token, "PIPE")) && pipe != 1 && shell->status.no_exec == 0)
-        handle_execution(shell, &token_index);
+	if (shell->status.no_exec == 0)
+		return ;
+	cmd_args = get_args(shell);
 }

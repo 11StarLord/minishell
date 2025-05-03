@@ -26,7 +26,7 @@ void	token_analysis(t_shell *shell, char *input_line)
 	dup_tokens(shell,tokens);
 	shell->charge = 0;
 	handle_redirection(shell, 0, 0);
-	//execute_command(shell, 0, 0);
+	handle_execution(shell, 0);
     ft_free_tokens(tokens);
     ft_free(input_line);
 }

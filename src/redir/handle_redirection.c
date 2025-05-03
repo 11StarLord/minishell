@@ -75,13 +75,3 @@ void	handle_redirection(t_shell *shell, int token_index, int *pipe)
 			token_index++;
 	}
 }
-
-void	execute_command(t_shell *shell, int start, int end)
-{
-	pid_t	pid;
-	char	**cmd_args;
-
-	if (shell->status.no_exec == 0)
-		return ;
-	cmd_args = get_args(shell);
-}

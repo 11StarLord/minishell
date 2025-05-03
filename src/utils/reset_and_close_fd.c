@@ -14,14 +14,16 @@ void    reset_fds(t_shell *shell)
 	  shell->pipe_out = -1;
 }
 
+void  ft_close(int fd)
+{
+  if (fd > 0)
+    close (fd);
+}
+
 void    close_fds(t_shell *shell)
 {
-    if (shell->fd_in > 0)
-		  close(shell->fd_in);
-    if (shell->fd_out > 0)
-		  close(shell->fd_out);
-    if (shell->pipe_in > 0)
-	  	close(shell->pipe_in);
-    if (shell->pipe_out > 0)
-		  close(shell->pipe_out);
+    ft_close(shell->fd_in);
+    ft_close(shell->fd_out);
+    ft_close(shell->pipe_in);
+    ft_close(shell->pipe_out);
 }

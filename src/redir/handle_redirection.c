@@ -49,6 +49,10 @@ static void redirection(t_shell *shell, char *file, char *type)
 
 void	handle_redirection(t_shell *shell, int token_index, int *pipe)
 {
+	int	test_pipe;
+
+	if (!pipe)
+		pipe = &test_pipe;
 	while (shell->tokens[token_index].str)
 	{
 		if (is_type_token(shell->tokens[token_index], "REDIR_OUT"))
@@ -69,7 +73,7 @@ void	handle_redirection(t_shell *shell, int token_index, int *pipe)
 		else if (is_type_token(shell->tokens[token_index], "PIPE"))
 		{
 			*pipe = create_pipe_process(shell);
-			token_index ++;
+			token_index++;
 		}
 		else
 			token_index++;

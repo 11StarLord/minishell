@@ -3,7 +3,9 @@
 void	token_analysis(t_shell *shell, char *input_line)
 {
 	t_token	*tokens;
+	int	pipe_flag;
 
+	pipe_flag = 0;
 	input_line = ft_strtrim(input_line, " ");
 	if (!input_line || !input_line[0])
 	{
@@ -24,9 +26,9 @@ void	token_analysis(t_shell *shell, char *input_line)
 		return ;
 	}
 	dup_tokens(shell,tokens);
-	shell->charge = 0;
-	handle_redirection(shell, 0, 0);
-	handle_execution(shell, 0);
+	shell->charge = 1;
+	handle_redirection(shell, 0, &pipe_flag);
+	handle_execution(shell);
     ft_free_tokens(tokens);
     ft_free(input_line);
 }

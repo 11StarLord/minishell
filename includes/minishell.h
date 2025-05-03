@@ -95,12 +95,11 @@ bool    is_valid_redirect_syntax(t_token *tokens, t_shell *shell);
 void	dup_tokens(t_shell *shell, t_token *tokens);
 void	handle_redirection(t_shell *shell, int pos_token, int *pipe);
 bool	has_heredoc(t_shell *shell, t_token *tokens);
-void	handle_execution(t_shell *shell, int *pos_token);
 void	handle_redirection_test(t_shell *shell);
 void	reset_fds(t_shell *shell);
 void	reset_std(t_shell *shell);
 void    close_fds(t_shell *shell);
 void    ft_close(int fd);
-void	handle_execution(t_shell *shell, int *pos_token);
+void	handle_execution(t_shell *shell);
 
 #endif

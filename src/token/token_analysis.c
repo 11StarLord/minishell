@@ -1,11 +1,26 @@
 #include "minishell.h"
 
+void	process_command(t_shell *shell)
+{
+	int	pos_token;
+
+	pos_token = 0;
+	while (shell->tokens[pos_token].str)
+	{
+		handle_redirection(shell, &pos_token);
+		handle_execution(shell, &pos_token);
+		if (is_type_token(shell->tokens[pos_token], "PIPE"))
+		{
+			create_pipe_process(shell);
+			pos_token++;
+		}
+	}
+}
+
 void	token_analysis(t_shell *shell, char *input_line)
 {
 	t_token	*tokens;
-	int	pipe_flag;
 
-	pipe_flag = 0;
 	input_line = ft_strtrim(input_line, " ");
 	if (!input_line || !input_line[0])
 	{
@@ -27,8 +42,7 @@ void	token_analysis(t_shell *shell, char *input_line)
 	}
 	dup_tokens(shell,tokens);
 	shell->charge = 1;
-	handle_redirection(shell, 0, &pipe_flag);
-	handle_execution(shell);
+	process_command(shell);
     ft_free_tokens(tokens);
     ft_free(input_line);
 }

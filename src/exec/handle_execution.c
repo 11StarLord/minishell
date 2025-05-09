@@ -246,16 +246,14 @@ static	char **tokens_to_cmd(t_token *token, int *pos_token)
 	return (cmd);
 }
 
-void	handle_execution(t_shell *shell)
+void	handle_execution(t_shell *shell, int *pos_token)
 {
 	char	**cmd;
-	int		pos_token;
 
-	pos_token = 0;
 	if (shell->charge == 0)
 		return ;
-	cmd = tokens_to_cmd(shell->tokens, &pos_token);
-	if (!cmd[0])
+	cmd = tokens_to_cmd(shell->tokens, pos_token);
+	if (!cmd || !cmd[0])
 	{
 		free_matrix(cmd);
 		return ;

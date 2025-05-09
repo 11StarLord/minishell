@@ -2,8 +2,11 @@
 
 static void shell_defaults(t_shell *shell, char **env)
 {
-     duplicate_env(shell, env);
      reset_fds(shell);
+     duplicate_env(shell, env);
+     shell->status.last_return = 0;
+     shell->status.exit_status = 0;
+     shell->status.no_exec = 0;
 }
 
 void init_shell(t_shell *shell,char ** env)

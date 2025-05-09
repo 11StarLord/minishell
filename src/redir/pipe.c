@@ -3,14 +3,14 @@
 
 static int	setup_child_process(t_shell *shell, int *pipe_fds)
 {
-	close(pipe_fds[1]);
+	ft_close(pipe_fds[1]);
 	if (dup2(pipe_fds[0], STDIN_FILENO) == -1)
 	{
 		perror("minishell: dup2 child");
+		close(pipe_fds[0]);
 		return (-1);
 	}
-	close(pipe_fds[0]);
-	shell->pipe_in = STDIN_FILENO;
+	shell->pipe_in = pipe_fds[0];
 	shell->status.no_exec = 0;
 	shell->is_parent_process = false;
 	return (2);
@@ -18,14 +18,14 @@ static int	setup_child_process(t_shell *shell, int *pipe_fds)
 
 static int	setup_parent_process(t_shell *shell, int *pipe_fds)
 {
-	close(pipe_fds[0]);
+	ft_close(pipe_fds[0]);
 	if (dup2(pipe_fds[1], STDOUT_FILENO) == -1)
 	{
 		perror("minishell: dup2 parent");
+		close(pipe_fds[1]);
 		return (-1);
 	}
-	close(pipe_fds[1]);
-	shell->pipe_out = STDOUT_FILENO;
+	shell->pipe_out = pipe_fds[1];
 	shell->is_parent_process = true;
 	return (1);
 }

@@ -4,6 +4,8 @@ void    reset_std(t_shell *shell)
 {
   dup2(shell->stdin, STDIN_FILENO);
   dup2(shell->stdout, STDOUT_FILENO);
+  close(shell->stdin);
+  close(shell->stdout);
 }
 
 void    reset_fds(t_shell *shell)

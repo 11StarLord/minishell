@@ -1,5 +1,12 @@
 #include "minishell.h"
 
+bool	is_redirection_token(t_token token)
+{
+	return (is_type_token(token, "REDIR_OUT") || 
+		is_type_token(token, "APPEND") ||
+		is_type_token(token, "REDIR_IN") );
+}
+
 void	process_command(t_shell *shell)
 {
 	int	pos_token;
@@ -7,13 +14,21 @@ void	process_command(t_shell *shell)
 	pos_token = 0;
 	while (shell->tokens[pos_token].str)
 	{
-		handle_redirection(shell, &pos_token);
-		handle_execution(shell, &pos_token);
-		if (is_type_token(shell->tokens[pos_token], "PIPE"))
+		while (is_redirection_token(shell->tokens[pos_token]))
 		{
-			create_pipe_process(shell);
+			handle_redirection(shell, &pos_token);
 			pos_token++;
 		}
+		if (is_type_token(shell->tokens[pos_token], "ARGUMENT"))
+		{
+			pos_token = 0;
+			handle_execution(shell, &pos_token);
+		}
+		if (is_type_token(shell->tokens[pos_token], "ARGUMENT"))
+		{
+			create_pipe_process(shell);
+		}
+		pos_token++;
 	}
 }
 

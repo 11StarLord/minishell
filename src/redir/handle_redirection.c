@@ -32,14 +32,14 @@ static void redirection_out(t_shell *shell, char *file, char *type)
 	    shell->fd_out = open(file, O_CREAT | O_WRONLY | O_APPEND, S_IRWXU);
     if (shell->fd_out == -1)
     {
-		perror("minishell");
+		perror("minishell: open");
         shell->status.last_return = 1;
         shell->status.no_exec = 1;
         return ;
     }
 	if (dup2(shell->fd_out, STDOUT_FILENO) == -1)
     {
-		perror("minishell");
+		perror("minishell: dup2");
         close(shell->fd_out);
         return ;
 	}
@@ -47,24 +47,19 @@ static void redirection_out(t_shell *shell, char *file, char *type)
 
 void	handle_redirection(t_shell *shell, int *token_index)
 {
-	while (shell->tokens[*token_index].str)
+	if (is_type_token(shell->tokens[*token_index], "REDIR_OUT"))
 	{
-		if (is_type_token(shell->tokens[*token_index], "REDIR_OUT"))
-		{
-			redirection_out(shell, shell->tokens[*token_index + 1].str, "trunc");
-			*token_index += 2;
-		}
-		else if (is_type_token(shell->tokens[*token_index], "APPEND"))
-		{
-			redirection_out(shell, shell->tokens[*token_index + 1].str, "append");
-			*token_index += 2;
-		}
-		else if (is_type_token(shell->tokens[*token_index], "REDIR_IN"))
-		{
-			redirection_input(shell, shell->tokens[*token_index + 1].str);
-			*token_index += 2;
-		}
-		else
-			break ;
+		redirection_out(shell, shell->tokens[*token_index + 1].str, "trunc");
+		*token_index += 2;
+	}
+	else if (is_type_token(shell->tokens[*token_index], "APPEND"))
+	{
+		redirection_out(shell, shell->tokens[*token_index + 1].str, "append");
+		*token_index += 2;
+	}
+	else if (is_type_token(shell->tokens[*token_index], "REDIR_IN"))
+	{
+		redirection_input(shell, shell->tokens[*token_index + 1].str);
+		*token_index += 2;
 	}
 }

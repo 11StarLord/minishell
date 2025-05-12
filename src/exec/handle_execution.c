@@ -246,7 +246,7 @@ static	char **tokens_to_cmd(t_token *token, int *pos_token)
 	return (cmd);
 }
 
-void	handle_execution(t_shell *shell, int *pos_token)
+void	ghandle_execution(t_shell *shell, int *pos_token)
 {
 	char	**cmd;
 

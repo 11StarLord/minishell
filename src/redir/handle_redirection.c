@@ -45,21 +45,18 @@ static void redirection_out(t_shell *shell, char *file, char *type)
 	}
 }
 
-void	handle_redirection(t_shell *shell, int *token_index)
+void	handle_redirection(t_shell *shell, int token_index)
 {
-	if (is_type_token(shell->tokens[*token_index], "REDIR_OUT"))
+	while (shell->tokens[token_index].str)
 	{
-		redirection_out(shell, shell->tokens[*token_index + 1].str, "trunc");
-		*token_index += 2;
-	}
-	else if (is_type_token(shell->tokens[*token_index], "APPEND"))
-	{
-		redirection_out(shell, shell->tokens[*token_index + 1].str, "append");
-		*token_index += 2;
-	}
-	else if (is_type_token(shell->tokens[*token_index], "REDIR_IN"))
-	{
-		redirection_input(shell, shell->tokens[*token_index + 1].str);
-		*token_index += 2;
-	}
+		if (is_type_token(shell->tokens[token_index], "REDIR_OUT"))
+			redirection_out(shell, shell->tokens[token_index + 1].str, "trunc");
+		else if (is_type_token(shell->tokens[token_index], "APPEND"))
+			redirection_out(shell, shell->tokens[token_index + 1].str, "append");
+		else if (is_type_token(shell->tokens[token_index], "REDIR_IN"))
+			redirection_input(shell, shell->tokens[token_index + 1].str);
+		else if (is_type_token(shell->tokens[token_index], "PIPE"))
+			create_pipe_process(shell);
+		token_index++;
+	}	
 }

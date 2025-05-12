@@ -101,6 +101,6 @@ void    close_fds(t_shell *shell);
 void    ft_close(int fd);
 void	handle_execution(t_shell *shell, int *pos_token);
 void	process_command(t_shell *shell);
-void	handle_redirection(t_shell *shell, int *pos_token);
+void	handle_redirection(t_shell *shell, int pos_token);
 
 #endif

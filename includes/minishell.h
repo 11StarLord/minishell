@@ -41,6 +41,15 @@ typedef struct s_env
 	struct s_env	*next;
 }	t_env;
 
+typedef struct s_command
+{
+    char    *args;
+    char    *infile;
+    char    *outfile;
+    char    *appendfile;
+    bool    has_pipe;
+}   t_command;
+
 typedef struct s_shell
 {
     t_token *tokens;
@@ -56,11 +65,12 @@ typedef struct s_shell
     t_status_shell status;
     t_tmp_values tmp;
     int tokens_size;
+    t_command   *commands;
+    int num_commands;
 } t_shell;
 
 void    init_shell(t_shell *shell,char **env);
 void    token_analysis(t_shell *shell, char *line);
-
 void    duplicate_env(t_shell *shell, char **env);
 void    free_matrix(char **matrix);
 int     ft_readline(t_shell *shell, char **line);
@@ -102,5 +112,7 @@ void    ft_close(int fd);
 void	handle_execution(t_shell *shell, int *pos_token);
 void	process_command(t_shell *shell);
 void	handle_redirection(t_shell *shell, int pos_token);
+void	create_pipe_process2(t_shell *shell);
+
 
 #endif

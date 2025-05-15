@@ -57,6 +57,7 @@ void	handle_redirection(t_shell *shell, int token_index)
 			redirection_input(shell, shell->tokens[token_index + 1].str);
 		else if (is_type_token(shell->tokens[token_index], "PIPE"))
 			create_pipe_process(shell);
+			//create_pipe_process2(shell);
 		token_index++;
-	}	
+	}
 }

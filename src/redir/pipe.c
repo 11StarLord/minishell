@@ -56,3 +56,26 @@ int	create_pipe_process(t_shell *shell)
 	return (0);
 }
 
+/*void	create_pipe_process2(t_shell *shell)
+{
+	int	p_fd[2];
+	int	pid;
+	int	status;
+	char	**cmd;
+
+	status = 0;
+	pipe(p_fd);
+	pid = fork();
+	if (pid < 0)
+	{
+		perror("minishell: fork1");
+		return ;
+	}
+	if (pid == 0)
+	{
+		dup2(p_fd[1], STDOUT_FILENO);
+		close(p_fd[0]);
+		close(p_fd[1]);
+		cmd = token_to
+	}
+}*/

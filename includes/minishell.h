@@ -62,10 +62,10 @@ void    init_shell(t_shell *shell,char **env);
 void    token_analysis(t_shell *shell, char *line);
 
 void    duplicate_env(t_shell *shell, char **env);
-void    free_matrix(char **matrix);
+
 int     ft_readline(t_shell *shell, char **line);
 void    skip_whitespace(char *line, int *i);
-void	ft_free(void *ptr_to_free);
+
 void	process_tokens(t_shell *shell, char *line, t_token *tokens, int numb_tokens);
 bool    is_separator(char c);
 char    *extract_token(char *input, int *index_inp, int *in_quotes);
@@ -78,7 +78,7 @@ char	*ft_getenv(t_env *env, char *var);
 bool     is_valid_token(char *str, int i, t_shell *shell);
 bool     is_quote_unclosed(char *str, int i, char quote, t_shell *shell);
 void    handle_quotes(t_shell *shell, char *input, int *index);
-void	ft_free_tokens(t_token *tokens);
+
 void	perform_variable_expansion(t_shell *shell, char *input, char *expanded, int in_heredoc);
 void    handle_variable_expansion(t_shell *shell, char *expanded, int *index_inp, int *index_exp);
 char	*get_env_value(t_shell *shell, char *input, int *index_inp);
@@ -102,5 +102,10 @@ void    ft_close(int fd);
 void	handle_execution(t_shell *shell, int *pos_token);
 void	process_command(t_shell *shell);
 void	handle_redirection(t_shell *shell, int pos_token);
+ 
 
+void	ft_free(void *ptr_to_free);
+void	free_env(t_env *head);
+void    free_matrix(char **matrix);
+void	ft_free_tokens(t_token *tokens);
 #endif

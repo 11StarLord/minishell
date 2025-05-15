@@ -21,10 +21,15 @@ void init_shell(t_shell *shell,char ** env)
           shell->stdout = dup(STDOUT_FILENO);
           shell->tokens = NULL;
           if (!ft_readline(shell, &input_line))
-               break ;
+          {
+               free(input_line);
+               break;
+          }
           token_analysis(shell, input_line);
-		reset_std(shell);
+		reset_std(shell); 
 		close_fds(shell);
 		reset_fds(shell);
+          waitpid(-1, &shell->status.exit_status, 0);
      }
+     free_env(shell->env);
 }

@@ -32,3 +32,21 @@ void	free_matrix(char **matrix)
 	free(matrix);
 	matrix = NULL;
 }
+
+void	free_env(t_env *head)
+{
+	t_env	*tmp;
+
+	if (!head)
+		return ;
+	while (head)
+	{
+		tmp = head;
+		head = head->next;
+		if (tmp->key)
+			ft_free(tmp->key);
+		if (tmp->value)
+			ft_free(tmp->value);
+		ft_free(tmp);
+	}
+}

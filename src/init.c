@@ -10,7 +10,7 @@ static void shell_defaults(t_shell *shell, char **env)
 }
 
 void init_shell(t_shell *shell,char ** env)
-{  
+{
      char *input_line;
      
      shell_defaults(shell, env);

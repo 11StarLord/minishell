@@ -2,7 +2,6 @@
 
 static int is_redirection_token(t_token token) {
     return (!strcmp(token.type, "REDIR_OUT") ||
-            !strcmp(token.type, "REDIR_IN") ||
             !strcmp(token.type, "APPEND") ||
             !strcmp(token.type, "HEREDOC"));
 }

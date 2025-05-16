@@ -1,0 +1,194 @@
+===== Teste 1: Echo simples =====
+Comando: echo hello world
+Status: PASSOU
+
+===== Teste 2: Echo com aspas =====
+Comando: echo "hello world"
+Status: PASSOU
+
+===== Teste 3: Comando inexistente =====
+Comando: comando_que_nao_existe
+Status: FALHOU
+Saída esperada: comando não encontrado
+Saída recebida: minishell$ comando_que_nao_existe
+minishell: comando_que_nao_existe: No such file or directory
+minishell$ exit
+Código esperado: 127
+Código recebido: 127
+
+===== Teste 4: Pwd =====
+Comando: pwd
+Status: PASSOU
+
+===== Teste 5: Env =====
+Comando: env
+Status: PASSOU
+
+===== Teste 6: Redirecionamento de saída =====
+Comando: echo hello > minishell_test_temp/outfile; cat minishell_test_temp/outfile
+Status: PASSOU
+
+===== Teste 7: Redirecionamento de entrada =====
+Comando: cat < minishell_test_temp/outfile
+Status: FALHOU
+Saída esperada: hello
+Saída recebida: minishell$ cat < minishell_test_temp/outfile
+minishell: open: No such file or directory
+minishell$ exit
+Código esperado: 0
+Código recebido: 0
+
+===== Teste 8: Redirecionamento de append =====
+Comando: echo world >> minishell_test_temp/outfile; cat minishell_test_temp/outfile
+Status: PASSOU
+
+===== Teste 9: Redirecionamento com erro =====
+Comando: cat < arquivo_inexistente
+Status: FALHOU
+Saída esperada: No such file or directory
+Saída recebida: minishell$ cat < arquivo_inexistente
+minishell: open: No such file or directory
+minishell$ exit
+Código esperado: 1
+Código recebido: 0
+
+===== Teste 10: Pipe simples =====
+Comando: echo hello | grep hello
+Status: PASSOU
+
+===== Teste 11: Múltiplos pipes =====
+Comando: echo hello world | grep hello | wc -l
+Status: FALHOU
+Saída esperada: 1
+Saída recebida: minishell$ echo hello world | grep hello | wc -l
+minishell$ exit
+hello world
+minishell$ exit
+minishell$ exit
+minishell$ exit
+Código esperado: 0
+Código recebido: 0
+
+===== Teste 12: Pipe com redirecionamento =====
+Comando: echo hello | grep hello > minishell_test_temp/pipefile; cat minishell_test_temp/pipefile
+Status: PASSOU
+
+===== Teste 13: Expansão de variável =====
+Comando: echo $HOME
+Status: PASSOU
+
+===== Teste 14: Variável inexistente =====
+Comando: echo $VARIAVEL_INEXISTENTE
+Status: PASSOU
+
+===== Teste 15: Export e expansão =====
+Comando: export TEST_VAR=value; echo $TEST_VAR
+Status: FALHOU
+Saída esperada: value
+Saída recebida: minishell$ export TEST_VAR=value; echo $TEST_VAR
+minishell: export: No such file or directory
+minishell$ exit
+Código esperado: 0
+Código recebido: 127
+
+===== Teste 16: Unset =====
+Comando: export TEST_VAR=value; unset TEST_VAR; echo $TEST_VAR
+Status: FALHOU
+Saída esperada: 
+Saída recebida: minishell$ export TEST_VAR=value; unset TEST_VAR; echo $TEST_VAR
+minishell: export: No such file or directory
+minishell$ exit
+Código esperado: 0
+Código recebido: 127
+
+===== Teste 17: Aspas simples =====
+Comando: echo 'hello $HOME'
+Status: PASSOU
+
+===== Teste 18: Aspas duplas =====
+Comando: echo "hello $HOME"
+Status: PASSOU
+
+===== Teste 19: Sem aspas com variável =====
+Comando: echo hello $HOME
+Status: PASSOU
+
+===== Teste 20: cd =====
+Comando: cd minishell_test_temp; pwd
+Status: FALHOU
+Saída esperada: /home/djoao/Exercicios/common_core/42_minishell/minishell_test_temp
+Saída recebida: minishell$ cd minishell_test_temp; pwd
+minishell: cd: No such file or directory
+minishell$ exit
+Código esperado: 0
+Código recebido: 127
+
+===== Teste 21: cd retorno =====
+Comando: cd minishell_test_temp; cd ..; pwd
+Status: FALHOU
+Saída esperada: /home/djoao/Exercicios/common_core/42_minishell
+Saída recebida: minishell$ cd minishell_test_temp; cd ..; pwd
+minishell: cd: No such file or directory
+minishell$ exit
+Código esperado: 0
+Código recebido: 127
+
+===== Teste 22: cd inválido =====
+Comando: cd diretorio_inexistente
+Status: FALHOU
+Saída esperada: No such file or directory
+Saída recebida: minishell$ cd diretorio_inexistente
+minishell: cd: No such file or directory
+minishell$ exit
+Código esperado: 1
+Código recebido: 127
+
+===== Teste 23: exit =====
+Comando: exit 42
+Status: FALHOU
+Saída esperada: 
+Saída recebida: minishell$ exit 42
+minishell: exit: No such file or directory
+minishell$ exit
+Código esperado: 42
+Código recebido: 127
+
+===== Teste 24: exit sem valor =====
+Comando: exit
+Status: FALHOU
+Saída esperada: 
+Saída recebida: minishell$ exit
+minishell: exit: No such file or directory
+minishell$ exit
+Código esperado: 0
+Código recebido: 127
+
+===== Teste 25: Operador AND =====
+Comando: true && echo success
+Status: PASSOU
+
+===== Teste 26: Operador AND falha =====
+Comando: false && echo success
+Status: PASSOU
+
+===== Teste 27: Operador OR =====
+Comando: false || echo success
+Status: FALHOU
+Saída esperada: success
+Saída recebida: minishell$ false || echo success
+minishell$ exit
+Código esperado: 0
+Código recebido: 1
+
+===== Teste 28: Operador OR sucesso =====
+Comando: true || echo success
+Status: PASSOU
+
+===== Teste 29: Comando com argumentos =====
+Comando: ls -la
+Status: PASSOU
+
+===== Teste 30: Subshell =====
+Comando: echo $(echo hello)
+Status: PASSOU
+

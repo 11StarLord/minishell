@@ -14,6 +14,7 @@
 #include <dirent.h>
 #include <errno.h>
 
+
 typedef struct s_token
 {
 	char	*str;
@@ -102,7 +103,9 @@ void    ft_close(int fd);
 void	handle_execution(t_shell *shell, int *pos_token);
 void	process_command(t_shell *shell);
 void	handle_redirection(t_shell *shell, int pos_token);
- 
+
+
+ void	handle_signals();
 
 void	ft_free(void *ptr_to_free);
 void	free_env(t_env *head);

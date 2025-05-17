@@ -8,6 +8,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 SRCS =  src/main.c \
 		src/init.c \
+		src/signal.c \
 		src/env/duplicate_env.c \
 		src/utils/readline.c \
 		src/utils/release_memory.c \

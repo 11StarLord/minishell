@@ -7,6 +7,7 @@ static void shell_defaults(t_shell *shell, char **env)
      shell->status.last_return = 0;
      shell->status.exit_status = 0;
      shell->status.no_exec = 0;
+     handle_signals();
 }
 
 void init_shell(t_shell *shell,char ** env)

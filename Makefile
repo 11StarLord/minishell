@@ -20,13 +20,13 @@ SRCS =  src/main.c \
 		src/token/lexical/process_quote.c \
 		src/token/semantic/reorganize_token.c \
 		src/redir/handle_redirection.c \
-		src/redir/pipe.c \
 		src/token/token_analysis.c\
 		src/token/utils.c\
 		src/env/get_env.c\
 		src/token/semantic/handle_heredoc.c	\
 		src/token/semantic/dup_token.c	\
 		src/redir/verify_redir_syntax.c \
+		src/redir/ft_pipe.c \
 		src/exec/handle_execution.c 	\
 		src/utils/reset_and_close_fd.c
 

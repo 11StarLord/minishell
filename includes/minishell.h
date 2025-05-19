@@ -111,4 +111,6 @@ void	ft_free(void *ptr_to_free);
 void	free_env(t_env *head);
 void    free_matrix(char **matrix);
 void	ft_free_tokens(t_token *tokens);
+
+int	minipipe(t_shell *shell);
 #endif

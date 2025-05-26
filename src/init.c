@@ -7,13 +7,12 @@ static void shell_defaults(t_shell *shell, char **env)
      shell->status.last_return = 0;
      shell->status.exit_status = 0;
      shell->status.no_exec = 0;
-     handle_signals();
 }
 
 void init_shell(t_shell *shell,char ** env)
 {
      char *input_line;
-     
+     int status;
      shell_defaults(shell, env);
      while(shell->status.exit_status == 0)
      {
@@ -30,7 +29,9 @@ void init_shell(t_shell *shell,char ** env)
 		reset_std(shell); 
 		close_fds(shell);
 		reset_fds(shell);
-          waitpid(-1, &shell->status.exit_status, 0);
+          waitpid(-1, &status, 0);
+          if (shell->is_parent_process == 0)
+               exit(0);
      }
      free_env(shell->env);
 }

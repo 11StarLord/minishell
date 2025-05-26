@@ -14,7 +14,6 @@
 #include <dirent.h>
 #include <errno.h>
 
-
 typedef struct s_token
 {
 	char	*str;
@@ -57,6 +56,7 @@ typedef struct s_shell
     t_status_shell status;
     t_tmp_values tmp;
     int tokens_size;
+    bool incomplete_pipe;
 } t_shell;
 
 void    init_shell(t_shell *shell,char **env);
@@ -91,7 +91,6 @@ int	compare_type(t_token token, char *type);
 
 void gettokens(t_shell *shell, char *input_line, t_token **tokens);
 void reorganize_tokens(t_token *tokens);
-int	create_pipe_process(t_shell *shell);
 bool    is_valid_redirect_syntax(t_token *tokens, t_shell *shell);
 void	dup_tokens(t_shell *shell, t_token *tokens);
 bool	has_heredoc(t_shell *shell, t_token *tokens);
@@ -102,15 +101,11 @@ void    close_fds(t_shell *shell);
 void    ft_close(int fd);
 void	handle_execution(t_shell *shell, int *pos_token);
 void	process_command(t_shell *shell);
-void	handle_redirection(t_shell *shell, int pos_token);
-
-
- void	handle_signals();
+void	handle_redirection(t_shell *shell, int token_index, int pipe);
+ int	minipipe(t_shell *shell);
 
 void	ft_free(void *ptr_to_free);
 void	free_env(t_env *head);
 void    free_matrix(char **matrix);
 void	ft_free_tokens(t_token *tokens);
-
-int	minipipe(t_shell *shell);
 #endif

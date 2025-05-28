@@ -14,11 +14,6 @@
 #include <dirent.h>
 #include <errno.h>
 
-typedef struct s_token
-{
-	char	*str;
-	char	*type;
-}	t_token;
 
 typedef struct s_status_shell
 {
@@ -32,6 +27,12 @@ typedef struct s_tmp_values
     int active_quote;
     char    *str;
 } t_tmp_values;
+
+typedef struct s_token
+{
+	char	*str;
+	char	*type;
+}	t_token;
 
 typedef struct s_env
 {

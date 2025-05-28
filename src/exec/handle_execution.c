@@ -246,6 +246,17 @@ static	char **tokens_to_cmd(t_token *token, int *pos_token)
 	return (cmd);
 }
 
+int	is_builtin(char **cmd)
+{
+	return (!ft_strcmp(cmd[0], "echo")
+		|| !ft_strcmp(cmd[0], "cd")
+		|| !ft_strcmp(cmd[0], "pwd")
+		|| !ft_strcmp(cmd[0], "env")
+		|| !ft_strcmp(cmd[0], "export")
+		|| !ft_strcmp(cmd[0], "unset")
+		|| !ft_strcmp(cmd[0], "exit"));
+}
+
 void	handle_execution(t_shell *shell, int *pos_token)
 {
 	char	**cmd;
@@ -258,7 +269,11 @@ void	handle_execution(t_shell *shell, int *pos_token)
 		free_matrix(cmd);
 		return ;
 	}
-	execute_command(shell, cmd);
+	
+	if(!is_builtin(cmd))
+		execute_command(shell, cmd);
+	else
+		printf("is builtin!\n");
 	free_matrix(cmd);
 	ft_close(shell->pipe_in);
 	ft_close(shell->pipe_out);

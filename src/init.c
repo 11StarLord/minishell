@@ -10,9 +10,9 @@ static void shell_defaults(t_shell *shell, char **env)
 }
 
 void init_shell(t_shell *shell,char ** env)
-{  
+{
      char *input_line;
-     
+     int status;
      shell_defaults(shell, env);
      while(shell->status.exit_status == 0)
      {
@@ -21,10 +21,17 @@ void init_shell(t_shell *shell,char ** env)
           shell->stdout = dup(STDOUT_FILENO);
           shell->tokens = NULL;
           if (!ft_readline(shell, &input_line))
-               break ;
+          {
+               free(input_line);
+               break;
+          }
           token_analysis(shell, input_line);
-		reset_std(shell);
+		reset_std(shell); 
 		close_fds(shell);
 		reset_fds(shell);
+          waitpid(-1, &status, 0);
+          if (shell->is_parent_process == 0)
+               exit(0);
      }
+     free_env(shell->env);
 }

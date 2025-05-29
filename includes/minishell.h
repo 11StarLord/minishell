@@ -14,11 +14,6 @@
 #include <dirent.h>
 #include <errno.h>
 
-typedef struct s_token
-{
-	char	*str;
-	char	*type;
-}	t_token;
 
 typedef struct s_status_shell
 {
@@ -33,6 +28,12 @@ typedef struct s_tmp_values
     char    *str;
 } t_tmp_values;
 
+typedef struct s_token
+{
+	char	*str;
+	char	*type;
+}	t_token;
+
 typedef struct s_env
 {
 	char			*key;
@@ -40,15 +41,6 @@ typedef struct s_env
 	char			*value;
 	struct s_env	*next;
 }	t_env;
-
-typedef struct s_command
-{
-    char    *args;
-    char    *infile;
-    char    *outfile;
-    char    *appendfile;
-    bool    has_pipe;
-}   t_command;
 
 typedef struct s_shell
 {
@@ -65,17 +57,17 @@ typedef struct s_shell
     t_status_shell status;
     t_tmp_values tmp;
     int tokens_size;
-    t_command   *commands;
-    int num_commands;
+    bool incomplete_pipe;
 } t_shell;
 
 void    init_shell(t_shell *shell,char **env);
 void    token_analysis(t_shell *shell, char *line);
+
 void    duplicate_env(t_shell *shell, char **env);
-void    free_matrix(char **matrix);
+
 int     ft_readline(t_shell *shell, char **line);
 void    skip_whitespace(char *line, int *i);
-void	ft_free(void *ptr_to_free);
+
 void	process_tokens(t_shell *shell, char *line, t_token *tokens, int numb_tokens);
 bool    is_separator(char c);
 char    *extract_token(char *input, int *index_inp, int *in_quotes);
@@ -88,7 +80,7 @@ char	*ft_getenv(t_env *env, char *var);
 bool     is_valid_token(char *str, int i, t_shell *shell);
 bool     is_quote_unclosed(char *str, int i, char quote, t_shell *shell);
 void    handle_quotes(t_shell *shell, char *input, int *index);
-void	ft_free_tokens(t_token *tokens);
+
 void	perform_variable_expansion(t_shell *shell, char *input, char *expanded, int in_heredoc);
 void    handle_variable_expansion(t_shell *shell, char *expanded, int *index_inp, int *index_exp);
 char	*get_env_value(t_shell *shell, char *input, int *index_inp);
@@ -100,7 +92,6 @@ int	compare_type(t_token token, char *type);
 
 void gettokens(t_shell *shell, char *input_line, t_token **tokens);
 void reorganize_tokens(t_token *tokens);
-int	create_pipe_process(t_shell *shell);
 bool    is_valid_redirect_syntax(t_token *tokens, t_shell *shell);
 void	dup_tokens(t_shell *shell, t_token *tokens);
 bool	has_heredoc(t_shell *shell, t_token *tokens);
@@ -111,8 +102,11 @@ void    close_fds(t_shell *shell);
 void    ft_close(int fd);
 void	handle_execution(t_shell *shell, int *pos_token);
 void	process_command(t_shell *shell);
-void	handle_redirection(t_shell *shell, int pos_token);
-void	create_pipe_process2(t_shell *shell);
+void	handle_redirection(t_shell *shell, int token_index, int pipe);
+ int	minipipe(t_shell *shell);
 
-
+void	ft_free(void *ptr_to_free);
+void	free_env(t_env *head);
+void    free_matrix(char **matrix);
+void	ft_free_tokens(t_token *tokens);
 #endif

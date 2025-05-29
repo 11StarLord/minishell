@@ -51,7 +51,7 @@ void gettokens(t_shell *shell, char *input_line, t_token **tokens)
     *tokens = (t_token *)malloc(sizeof(t_token) * (numb_tokens + 1));
     if (*tokens == NULL)
     {
-        perror("Erro: Falha ao alocar memória para tokens");
+        perror("Error: Failed to allocate memory for tokens");
         shell->status.last_return = 1;
         return;
     }

@@ -45,19 +45,23 @@ static void redirection_out(t_shell *shell, char *file, char *type)
 	}
 }
 
-void	handle_redirection(t_shell *shell, int token_index)
+void	handle_redirection(t_shell *shell, int token_index, int pipe)
 {
-	while (shell->tokens[token_index].str)
-	{
-		if (is_type_token(shell->tokens[token_index], "REDIR_OUT"))
-			redirection_out(shell, shell->tokens[token_index + 1].str, "trunc");
-		else if (is_type_token(shell->tokens[token_index], "APPEND"))
-			redirection_out(shell, shell->tokens[token_index + 1].str, "append");
-		else if (is_type_token(shell->tokens[token_index], "REDIR_IN"))
-			redirection_input(shell, shell->tokens[token_index + 1].str);
-		else if (is_type_token(shell->tokens[token_index], "PIPE"))
-			create_pipe_process(shell);
-			//create_pipe_process2(shell);
-		token_index++;
-	}
+	t_token	prev; 
+
+	prev.str = NULL;
+	if (token_index > 0)
+		prev = shell->tokens[token_index - 1];
+	if (is_type_token(shell->tokens[token_index], "REDIR_OUT"))
+		redirection_out(shell, shell->tokens[token_index + 1].str, "trunc");
+	else if (is_type_token(shell->tokens[token_index], "APPEND"))
+		redirection_out(shell, shell->tokens[token_index + 1].str, "append");
+	else if (is_type_token(shell->tokens[token_index], "REDIR_IN"))
+		redirection_input(shell, shell->tokens[token_index + 1].str);
+	else if (is_type_token(shell->tokens[token_index], "PIPE"))
+		pipe = minipipe(shell);
+	if (shell->tokens[(token_index + 1)].str && pipe != 1)
+		handle_redirection(shell, (token_index + 1), 0);
+	if ((!prev.str || is_type_token(prev, "PIPE")) && pipe != 1 && shell->status.no_exec == 0)
+		handle_execution(shell, &token_index);
 }

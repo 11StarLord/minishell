@@ -36,7 +36,6 @@ void    duplicate_env(t_shell *shell, char **env)
 		{
 			new = add_env(env[i]);
 			shell->env = new;
-			//shell->env_copy = new;
 		}
 		else
 		{

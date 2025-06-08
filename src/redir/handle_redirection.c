@@ -2,18 +2,21 @@
 
 static void	redirection_input(t_shell *shell, char *file)
 {
-	ft_close(shell->fd_in);
+	if(shell->fd_in > 0)
+		close(shell->fd_in);
 	shell->fd_in = open(file, O_RDONLY, S_IRWXU);
 	if (shell->fd_in == -1)
 	{
-		perror("minishell");
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(file, STDERR_FILENO);
+		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
 		shell->status.last_return = 1;
 		shell->status.no_exec = 1;
 		return ;
 	}
 	if (dup2(shell->fd_in, STDIN_FILENO) == -1)
 	{
-		perror("minishell");
+		perror("minishell: dup2");
 		if(shell->fd_in > 0)
 			close(shell->fd_in);
 		shell->status.last_return = 1;
@@ -32,7 +35,9 @@ static void redirection_out(t_shell *shell, char *file, char *type)
 	    shell->fd_out = open(file, O_CREAT | O_WRONLY | O_APPEND, S_IRWXU);
     if (shell->fd_out == -1)
     {
-		perror("minishell: open");
+		ft_putstr_fd("minishell: ", STDERR_FILENO);
+		ft_putstr_fd(file, STDERR_FILENO);
+		ft_putendl_fd(": No such file or directory", STDERR_FILENO);
         shell->status.last_return = 1;
         shell->status.no_exec = 1;
         return ;

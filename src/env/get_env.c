@@ -18,3 +18,18 @@ char	*ft_getenv(t_env *env, char *var)
 	}
 	return (NULL);
 }
+
+int	get_env_count(t_env *env)
+{
+	int	count;
+	t_env	*env_tmp;
+
+	env_tmp = env;
+	while (env_tmp)
+	{
+		count++;
+		env_tmp = env_tmp->next;
+	}
+	return (count);
+}
+

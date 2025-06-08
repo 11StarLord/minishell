@@ -8,7 +8,7 @@ LIBFT = $(LIBFT_DIR)/libft.a
 
 SRCS =  src/main.c \
 		src/init.c \
-		src/env/duplicate_env.c \
+		src/utils/handle_signal.c \
 		src/utils/readline.c \
 		src/utils/release_memory.c \
 		src/token/lexical/process_expansion.c \
@@ -23,10 +23,20 @@ SRCS =  src/main.c \
 		src/token/token_analysis.c\
 		src/token/utils.c\
 		src/env/get_env.c\
+		src/env/duplicate_env.c \
+		src/env/env_to_matrix.c \
 		src/token/semantic/handle_heredoc.c	\
 		src/token/semantic/dup_token.c	\
 		src/redir/verify_redir_syntax.c \
 		src/exec/handle_execution.c 	\
+		src/exec/handle_path_cmd.c 	\
+		src/exec/exec_cmd_extern.c 	\
+		src/exec/exec_cmd_builtin.c 	\
+		src/exec/bult_in/echo.c 	\
+		src/exec/bult_in/pwd.c 	\
+		src/exec/bult_in/exit.c 	\
+		src/exec/bult_in/util.c 	\
+		src/exec/bult_in/unset.c 	\
 		src/utils/reset_and_close_fd.c
 
 OBJ_DIR = _objs

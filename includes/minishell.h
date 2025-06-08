@@ -60,6 +60,8 @@ typedef struct s_shell
     bool incomplete_pipe;
 } t_shell;
 
+#include "bultin.h"
+
 void    init_shell(t_shell *shell,char **env);
 void    token_analysis(t_shell *shell, char *line);
 
@@ -90,10 +92,26 @@ char	*get_separator(char *line, int *index_line);
 bool	is_type_token(t_token token, char *type);
 int	compare_type(t_token token, char *type);
 
-void gettokens(t_shell *shell, char *input_line, t_token **tokens);
-void reorganize_tokens(t_token *tokens);
+void    gettokens(t_shell *shell, char *input_line, t_token **tokens);
+void    reorganize_tokens(t_token *tokens);
 bool    is_valid_redirect_syntax(t_token *tokens, t_shell *shell);
 void	dup_tokens(t_shell *shell, t_token *tokens);
+bool	has_heredoc(t_shell *shell, t_token *tokens);
+
+void	handle_execution(t_shell *shell, int *pos_token);
+void	execute_command(t_shell *shell, char **cmd);
+
+
+char    *get_command_path(char *cmd, t_shell *shell);
+char    **env_to_matrix(t_env *env, int i, bool has_quote);
+int	    get_env_count(t_env *env);
+
+void    reset_std(t_shell *shell);
+void    reset_fds(t_shell *shell);
+void    close_fds(t_shell *shell);
+void    ft_close(int fd);
+void	process_command(t_shell *shell);
+
 bool	has_heredoc(t_shell *shell, t_token *tokens);
 void	handle_redirection_test(t_shell *shell);
 void	reset_fds(t_shell *shell);
@@ -103,7 +121,11 @@ void    ft_close(int fd);
 void	handle_execution(t_shell *shell, int *pos_token);
 void	process_command(t_shell *shell);
 void	handle_redirection(t_shell *shell, int token_index, int pipe);
- int	minipipe(t_shell *shell);
+int     minipipe(t_shell *shell);
+
+void	handle_signals(t_shell *shell);
+void	reset_signals_in_child(void);
+void	sigint_handler(int sig);
 
 void	ft_free(void *ptr_to_free);
 void	free_env(t_env *head);
